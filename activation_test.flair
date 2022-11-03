@@ -1,0 +1,127 @@
+#!/u/scigroup/radcon/flair/flair
+# FLUKA Project file
+Version: 2
+Title: 
+Input: activation_test.inp
+Submit: *Default
+Tabs: 0.1 0.32 0.56 0.81 1.0
+Page: Flair
+DefMain: True
+LinkPrg: lfluka
+F77bound: True
+F77dline: False
+
+# Properties
+Properties: Input
+	REGION/COAT/@select: 1
+End
+
+# Run information
+Run: <default>
+	Prev:     0
+	Last:     5
+	Status:   0
+	Pid:      0
+	StartRun: 0
+End
+
+# Material
+Material: 
+	alpha: 0
+	color: #101010
+	fuzz: 0.0
+	ior: 1.0
+	shine: 10.0
+	specular: 0.0
+End
+
+# Material
+Material: STRONTIU
+	alpha: 0
+	color: #B09030
+	fuzz: 0.0
+	ior: 1.0
+	shine: 10.0
+	specular: 0.0
+End
+
+# Material
+Material: Coating
+	alpha: 0
+	color: #B01070
+	fuzz: 0.0
+	ior: 1.0
+	shine: 10.0
+	specular: 0.0
+End
+
+# Geometry Information
+Geometry:
+	Frame.bsplit: 0.99
+	Frame.tsplit: 0.5
+	Frame.vsplit: 0.01
+End
+
+# Geometry plot "GeoViewer Red plot"
+Plot: Red
+	Format: .eps
+	Type:   Geometry
+	basisu: 1 0 0
+	basisv: 0 1 0
+	boundaries: 1
+	coord: X-Y
+	extends: 100 0.0900901
+	labels: 1
+	layer: Media
+	origin: 0 0 0
+	subtype: Material
+	title: GeoViewer Red plot
+End
+
+# Geometry plot "GeoViewer Green plot"
+Plot: Green
+	Format: .eps
+	Type:   Geometry
+	basisu: 0 0 1
+	basisv: 1 0 0
+	boundaries: 1
+	coord: Z-X
+	extends: 100 0.0900901
+	labels: 1
+	layer: Media
+	origin: 0 0 0
+	subtype: Material
+	title: GeoViewer Green plot
+End
+
+# Geometry plot "GeoViewer Blue plot"
+Plot: Blue
+	Format: .eps
+	Type:   Geometry
+	basisu: 0 0 1
+	basisv: 0 1 0
+	boundaries: 1
+	coord: Z-Y
+	extends: 16.1506 8.83142
+	labels: 1
+	layer: Media
+	origin: 0 0.536266 4.22358
+	subtype: Material
+	title: GeoViewer Blue plot
+End
+
+# Geometry plot "GeoViewer Magenta plot"
+Plot: Magenta
+	Format: .eps
+	Type:   Geometry
+	basisu: -1 0 0
+	basisv: 0 1 0
+	boundaries: 1
+	coord: X-Y
+	extends: 100 6015
+	labels: 1
+	layer: Media
+	origin: 0 0 0
+	subtype: Material
+	title: GeoViewer Magenta plot
+End

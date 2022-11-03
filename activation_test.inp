@@ -1,0 +1,61 @@
+TITLE
+
+* Set the defaults for precision simulations
+DEFAULTS                                                              PRECISIO
+* Define the beam characteristics
+BEAM            11.0                                                  ELECTRON
+* Define the beam position
+BEAMPOS
+GEOBEGIN                                                              COMBNAME
+    0    0          
+* Black body
+SPH blkbody    0.0 0.0 0.0 100000.0
+* Void sphere
+SPH void       0.0 0.0 0.0 10000.0
+* Cylindrical target
+RCC target     0.0 0.0 0.0 0.0 0.0 1.0 5.0
+* Cylindrical target
+RCC target1    0.0 0.0 0.0 0.0 0.0 -0.0002 5.0
+END
+* Black hole
+BLKBODY      5 +blkbody -void
+* Void around
+VOID         5 +void -target -target1
+* Target
+TARGET       5 +target
+COAT         5 +target1
+END
+GEOEND
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
+ASSIGNMA    BLCKHOLE   BLKBODY
+ASSIGNMA      VACUUM      VOID
+ASSIGNMA    BERYLLIU    TARGET
+ASSIGNMA     Coating      COAT
+MATERIAL                             3.9                              Coating
+COMPOUND         1.0  STRONTIU       1.0  CHROMIUM       4.0    OXYGENCoating
+MATERIAL         38.                2.54                              STRONTIU
+MATERIAL         24.                7.18                              CHROMIUM
+MAT-PROP                           257.0  CHROMIUM
+MAT-PROP        40.0                      CHROMIUM                    DPA-ENER
+STERNHEI      4.1781     0.034    3.0451   0.15419    2.9896      0.14CHROMIUM
+MAT-PROP                           366.0  STRONTIU
+STERNHEI      5.9867    0.4585    3.6778   0.07165    3.4435      0.14STRONTIU
+* Requests simulation of radioactive decays and sets the corresponding
+* biasing and transport conditions
+RADDECAY          1.
+* 1month at 10muA
+IRRPROFI    2592000.   6.25E13
+* Defines decay times for radioactive product scoring
+DCYTIMES         0.0     3600.    86400.
+* Associates selected scoring detectors with user-defined decay times
+DCYSCORE
+* Set the random number seed
+RANDOMIZ         1.0
+* Set the number of primary histories to be simulated in the run
+START         10000.
+STOP
+PHYSICS           3.                                                  EVAPORAT
+PHYSICS           1.                                                  COALESCE
+PHOTONUC          1.                      BLCKHOLE  @LASTMAT
+PHOTONUC          1.                      BLCKHOLE  @LASTMAT          ELECTNUC
+STOP
