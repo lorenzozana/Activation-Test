@@ -3,19 +3,19 @@ TITLE
 * Set the defaults for precision simulations
 DEFAULTS                                                              PRECISIO
 * Define the beam characteristics
-BEAM            11.0                                                  ELECTRON
+BEAM             11.                                                  ELECTRON
 * Define the beam position
-BEAMPOS
+BEAMPOS          0.0       0.0      -1.0
 GEOBEGIN                                                              COMBNAME
     0    0          
 * Black body
-SPH blkbody    0.0 0.0 0.0 100000.0
+SPH blkbody    0.0 0.0 0.0 100000.
 * Void sphere
-SPH void       0.0 0.0 0.0 10000.0
+SPH void       0.0 0.0 0.0 10000.
 * Cylindrical target
-RCC target     0.0 0.0 0.0 0.0 0.0 1.0 5.0
+RCC target     0.0 0.0 0.0 0.0 0.0 1. 5.
 * Cylindrical target
-RCC target1    0.0 0.0 0.0 0.0 0.0 -0.0002 5.0
+RCC target1    0.0 0.0 0.0 0.0 0.0 -0.0002 5.
 END
 * Black hole
 BLKBODY      5 +blkbody -void
@@ -32,27 +32,40 @@ ASSIGNMA      VACUUM      VOID
 ASSIGNMA    BERYLLIU    TARGET
 ASSIGNMA     Coating      COAT
 MATERIAL                             3.9                              Coating
-COMPOUND         1.0  STRONTIU       1.0  CHROMIUM       4.0    OXYGENCoating
+COMPOUND          1.  STRONTIU        1.  CHROMIUM        4.    OXYGENCoating
 MATERIAL         38.                2.54                              STRONTIU
 MATERIAL         24.                7.18                              CHROMIUM
-MAT-PROP                           257.0  CHROMIUM
-MAT-PROP        40.0                      CHROMIUM                    DPA-ENER
+MAT-PROP                            257.  CHROMIUM
+MAT-PROP         40.                      CHROMIUM                    DPA-ENER
 STERNHEI      4.1781     0.034    3.0451   0.15419    2.9896      0.14CHROMIUM
-MAT-PROP                           366.0  STRONTIU
+MAT-PROP                            366.  STRONTIU
 STERNHEI      5.9867    0.4585    3.6778   0.07165    3.4435      0.14STRONTIU
 * Requests simulation of radioactive decays and sets the corresponding
 * biasing and transport conditions
-RADDECAY          1.
+RADDECAY          1.                  3.100000000.
+USRBIN           11.    ENERGY      -23.        5.       0.0        1.Dose
+USRBIN           0.0       0.0       -1.      100.        1.        2. &
+PART-THR      -1E-15   NEUTRON   NEUTRON
+IONTRANS    HEAVYION
 * 1month at 10muA
 IRRPROFI    2592000.   6.25E13
 * Defines decay times for radioactive product scoring
 DCYTIMES         0.0     3600.    86400.
-* Associates selected scoring detectors with user-defined decay times
-DCYSCORE
+LAM-BIAS                  0.02              PHOTON    PHOTON
+LAM-BIAS                  0.01            ELECTRON  ELECTRON
+LAM-BIAS                  0.01            POSITRON  POSITRON
+* After exposure
+DCYSCORE          1.                       RNTarg0   RNCoat0          RESNUCLE
+* After 1hour
+DCYSCORE          2.                       RNTarg1   RNCoat1          RESNUCLE
+RESNUCLE          3.      -21.                        TARGET          RNTarg0
+RESNUCLE          3.      -21.                          COAT          RNCoat0
+RESNUCLE          3.      -21.                        TARGET          RNTarg1
+RESNUCLE          3.      -21.                          COAT          RNCoat1
 * Set the random number seed
-RANDOMIZ         1.0
+RANDOMIZ          1.
 * Set the number of primary histories to be simulated in the run
-START         10000.
+START        100000.
 STOP
 PHYSICS           3.                                                  EVAPORAT
 PHYSICS           1.                                                  COALESCE
