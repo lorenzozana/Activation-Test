@@ -3,9 +3,9 @@ TITLE
 * Set the defaults for precision simulations
 DEFAULTS                                                              PRECISIO
 * Define the beam characteristics
-BEAM             11.                                                  ELECTRON
+BEAM             11.                                                  PROTON
 * Define the beam position
-BEAMPOS          0.0       0.0      -1.0
+BEAMPOS          0.0       0.0       -1.
 GEOBEGIN                                                              COMBNAME
     0    0          
 * Black body
@@ -42,11 +42,14 @@ MAT-PROP                            366.  STRONTIU
 STERNHEI      5.9867    0.4585    3.6778   0.07165    3.4435      0.14STRONTIU
 * Requests simulation of radioactive decays and sets the corresponding
 * biasing and transport conditions
-RADDECAY          1.                  3.100000000.
-USRBIN           11.    ENERGY      -23.        5.       0.0        1.Dose
+RADDECAY          1.        1.        5.100000000.   1001000        1.
+USRBIN           11.   DOSE-EQ      -23.        5.       0.0        1.Dose_0
 USRBIN           0.0       0.0       -1.      100.        1.        2. &
-PART-THR      -1E-15   NEUTRON   NEUTRON
+USRBIN           11.   DOSE-EQ      -23.        5.       0.0        1.Dose_1
+USRBIN           0.0       0.0       -1.      100.        1.        2. &
 IONTRANS    HEAVYION
+EMFCUT        -4.E-5   0.00004        1.  BLCKHOLE  @LASTMAT          PROD-CUT
+EMFCUT        -4.E-5   0.00004             BLKBODY  @LASTREG
 * 1month at 10muA
 IRRPROFI    2592000.   6.25E13
 * Defines decay times for radioactive product scoring
@@ -56,6 +59,10 @@ LAM-BIAS                  0.01            ELECTRON  ELECTRON
 LAM-BIAS                  0.01            POSITRON  POSITRON
 * After exposure
 DCYSCORE          1.                       RNTarg0   RNCoat0          RESNUCLE
+* After exposure
+DCYSCORE          1.                        Dose_0    Dose_0          USRBIN
+* After exposure
+DCYSCORE          2.                        Dose_1    Dose_1          USRBIN
 * After 1hour
 DCYSCORE          2.                       RNTarg1   RNCoat1          RESNUCLE
 RESNUCLE          3.      -21.                        TARGET          RNTarg0
@@ -65,8 +72,10 @@ RESNUCLE          3.      -21.                          COAT          RNCoat1
 * Set the random number seed
 RANDOMIZ          1.
 * Set the number of primary histories to be simulated in the run
-START        100000.
+START      10000000.
 STOP
+PHYSICS           1.                                                  ISOMERS
+PHYSICS           1.                                                  INFLDCAY
 PHYSICS           3.                                                  EVAPORAT
 PHYSICS           1.                                                  COALESCE
 PHOTONUC          1.                      BLCKHOLE  @LASTMAT
