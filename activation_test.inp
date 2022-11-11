@@ -1,36 +1,106 @@
 TITLE
-
-* Set the defaults for precision simulations
+proposal stuff
 DEFAULTS                                                              PRECISIO
 * Define the beam characteristics
-BEAM             11.                                                  PROTON
+BEAM            -0.5                           0.6       0.6       1.0ELECTRON
 * Define the beam position
-BEAMPOS          0.0       0.0       -1.
+BEAMPOS          0.0       0.0      -0.1
+*
+IONTRANS    HEAVYION
+PHOTONUC          1.                      BLCKHOLE  @LASTMAT
+PHOTONUC          1.                      BLCKHOLE  @LASTMAT          ELECTNUC
+PHYSICS           3.                                                  EVAPORAT
+PHYSICS           1.        1.        1.                              COALESCE
+PHYSICS           1.                                                  ISOMERS
+PHYSICS           1.                                                  INFLDCAY
+BIASING          0.0                  5.    TARGET      COAT
+LAM-BIAS                  0.02              PHOTON    PHOTON
+LAM-BIAS                  0.01            POSITRON  POSITRON
+LAM-BIAS                  0.01            ELECTRON  ELECTRON
+*
 GEOBEGIN                                                              COMBNAME
     0    0          
 * Black body
-SPH blkbody    0.0 0.0 0.0 100000.
-* Void sphere
-SPH void       0.0 0.0 0.0 10000.
+SPH blkbody    0.0 0.0 0.0 1000.
+* air sphere
+SPH air        0.0 0.0 0.0 500.
+* square W radiator
+RPP radiator   -1.90 1.90 -1.90 1.90 0.0 0.1
+* hBN crucible
+RPP crucible   -1.90 1.90 -1.90 1.90 0.8 13.3
+* copper cooling plates
+RPP cu_cool    -2.5 2.5 -1.9 1.90 0.8 13.8
+* copper base
+RPP base       -3.90 11.9 -2.2225 -1.90 0.26 26.
+* conical tip inside crucible
+TRC setup2     0.0 0.0 2.0847 0.0 0.0 -.2847 .57545 .1016
+* cylindrical region inside crucible
+RCC setup      0.0 0.0 2.0847 0.0 0.0 9.1453 .57545
+* grahpite plug @ end of crucible
+RCC plug       0.0 0.0 11.23 0.0 0.0 2.07 .57545
 * Cylindrical target
 RCC target     0.0 0.0 0.0 0.0 0.0 1. 5.
 * Cylindrical target
 RCC target1    0.0 0.0 0.0 0.0 0.0 -0.0002 5.
 END
 * Black hole
-BLKBODY      5 +blkbody -void
-* Void around
-VOID         5 +void -target -target1
+BLKBODY      5 +blkbody -air
+* air around
+SURROUND     5 +air  -target -target1
 * Target
 TARGET       5 +target
 COAT         5 +target1
 END
 GEOEND
-* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
-ASSIGNMA    BLCKHOLE   BLKBODY
-ASSIGNMA      VACUUM      VOID
-ASSIGNMA    BERYLLIU    TARGET
-ASSIGNMA     Coating      COAT
+*
+* Helium
+MATERIAL                       0.0001785                              HENAT
+COMPOUND    0.000137      HE-3 99.999863      HE-4                    HENAT
+MATERIAL          2.           0.0001339                            3.HE-3
+MATERIAL          2.           0.0001785                            4.HE-4
+*
+LOW-MAT         HE-3        2.        3.      296.                    HELIUM-3
+LOW-MAT         HE-4        2.        4.      296.                    HELIUM-4
+* Carbon/Graphite:
+MATERIAL                            1.84                              GRAPHITE
+COMPOUND       98.93      C-12      1.07      C-13                    GRAPHITE
+MATERIAL          6.                 1.7                           12.C-12
+MATERIAL          6.                 1.7                           13.C-13
+* Bound in graphite
+LOW-MAT         C-12        6.       -3.      296.                    CARBON
+LOW-MAT         C-13        6.       -3.      296.                    CARBON
+* Copper
+MATERIAL                            8.96                              CUNAT
+COMPOUND       69.15     CU-63     30.85     CU-65                    CUNAT
+MATERIAL         29.                8.96                           63.CU-63
+MATERIAL         29.                8.96                           65.CU-65
+*
+LOW-MAT        CU-63       29.       -2.      296.                    COPPER
+LOW-MAT        CU-65       29.       -2.      296.                    COPPER
+* Gallium
+* 5.904 g/cc for solid, 6.095 g/cc for liquid
+MATERIAL         31.               6.095                              GANAT
+COMPOUND      60.108     GA-69    39.892     GA-71                    GANAT
+MATERIAL         31.               6.095                           69.GA-69
+MATERIAL         31.               6.095                           71.GA-71
+*
+LOW-MAT        GA-69       31.       -2.      296.                    GALLIUM
+LOW-MAT        GA-71       31.       -2.      296.                    GALLIUM
+* Tungsten
+MATERIAL                           19.25                              WNAT
+COMPOUND        0.12     W-180     26.50     W-182     14.31     W-183WNAT
+COMPOUND       30.64     W-184     28.43     W-186                    WNAT
+MATERIAL         74.               19.25                          180.W-180
+MATERIAL         74.               19.25                          182.W-182
+MATERIAL         74.               19.25                          183.W-183
+MATERIAL         74.               19.25                          184.W-184
+MATERIAL         74.               19.25                          186.W-186
+*
+LOW-MAT        W-180       74.       -2.      296.                    TUNGSTEN
+LOW-MAT        W-182       74.       -2.      296.                    TUNGSTEN
+LOW-MAT        W-183       74.       -2.      296.                    TUNGSTEN
+LOW-MAT        W-184       74.       -2.      296.                    TUNGSTEN
+LOW-MAT        W-186       74.       -2.      296.                    TUNGSTEN
 MATERIAL                             3.9                              Coating
 COMPOUND          1.  STRONTIU        1.  CHROMIUM        4.    OXYGENCoating
 MATERIAL         38.                2.54                              STRONTIU
@@ -40,44 +110,30 @@ MAT-PROP         40.                      CHROMIUM                    DPA-ENER
 STERNHEI      4.1781     0.034    3.0451   0.15419    2.9896      0.14CHROMIUM
 MAT-PROP                            366.  STRONTIU
 STERNHEI      5.9867    0.4585    3.6778   0.07165    3.4435      0.14STRONTIU
+LOW-PWXS          1.                      HYDROGEN  @LASTMAT
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7..
+ASSIGNMA    BLCKHOLE   BLKBODY
+ASSIGNMA      VACUUM  SURROUND
+ASSIGNMA    BERYLLIU    TARGET
+ASSIGNMA     Coating      COAT
+EMFCUT        -4.E-5   0.00004        1.  BLCKHOLE  @LASTMAT          PROD-CUT
+EMFCUT        -4.E-5   0.00004             BLKBODY  @LASTREG
 * Requests simulation of radioactive decays and sets the corresponding
 * biasing and transport conditions
 RADDECAY          1.        1.        5.100000000.   1001000        1.
-USRBIN           11.   DOSE-EQ      -23.        5.       0.0        1.Dose_0
-USRBIN           0.0       0.0       -1.      100.        1.        2. &
-USRBIN           11.   DOSE-EQ      -23.        5.       0.0        1.Dose_1
-USRBIN           0.0       0.0       -1.      100.        1.        2. &
-IONTRANS    HEAVYION
-EMFCUT        -4.E-5   0.00004        1.  BLCKHOLE  @LASTMAT          PROD-CUT
-EMFCUT        -4.E-5   0.00004             BLKBODY  @LASTREG
-* 1month at 10muA
+USRBIN           0.0  ACTIVITY      -23.       1.0       1.0       0.0Chr_act
+USRBIN          -1.0      -1.0   -0.0002       20.       20.        1. &
+DCYSCORE          1.                       Chr_act   Chr_act          USRBIN
+AUXSCORE      USRBIN -5102400.             Chr_act   Chr_act
 IRRPROFI    2592000.   6.25E13
-* Defines decay times for radioactive product scoring
-DCYTIMES         0.0     3600.    86400.
-LAM-BIAS                  0.02              PHOTON    PHOTON
-LAM-BIAS                  0.01            ELECTRON  ELECTRON
-LAM-BIAS                  0.01            POSITRON  POSITRON
-* After exposure
-DCYSCORE          1.                       RNTarg0   RNCoat0          RESNUCLE
-* After exposure
-DCYSCORE          1.                        Dose_0    Dose_0          USRBIN
-* After exposure
-DCYSCORE          2.                        Dose_1    Dose_1          USRBIN
-* After 1hour
-DCYSCORE          2.                       RNTarg1   RNCoat1          RESNUCLE
-RESNUCLE          3.      -21.                        TARGET          RNTarg0
-RESNUCLE          3.      -21.                          COAT          RNCoat0
-RESNUCLE          3.      -21.                        TARGET          RNTarg1
-RESNUCLE          3.      -21.                          COAT          RNCoat1
+* 0 hrs & 10 hrs & 24 hrs
+DCYTIMES         0.0    36000.    86400.
+RESNUCLE          3.      -21.                        TARGET          res_targ
+RESNUCLE          3.      -21.                          COAT          res_coat
+DCYSCORE          1.                      res_targ  res_targ          RESNUCLE
+DCYSCORE          1.                      res_coat  res_coat          RESNUCLE
 * Set the random number seed
 RANDOMIZ          1.
 * Set the number of primary histories to be simulated in the run
-START      10000000.
-STOP
-PHYSICS           1.                                                  ISOMERS
-PHYSICS           1.                                                  INFLDCAY
-PHYSICS           3.                                                  EVAPORAT
-PHYSICS           1.                                                  COALESCE
-PHOTONUC          1.                      BLCKHOLE  @LASTMAT
-PHOTONUC          1.                      BLCKHOLE  @LASTMAT          ELECTNUC
+START       1000000.
 STOP
