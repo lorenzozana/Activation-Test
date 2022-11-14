@@ -2,7 +2,7 @@ TITLE
 proposal stuff
 DEFAULTS                                                              PRECISIO
 * Define the beam characteristics
-BEAM            -0.5                           0.6       0.6       1.0ELECTRON
+BEAM           -10.5                           0.6       0.6        1.ELECTRON
 * Define the beam position
 BEAMPOS          0.0       0.0      -0.1
 *
@@ -121,8 +121,8 @@ EMFCUT        -4.E-5   0.00004             BLKBODY  @LASTREG
 * Requests simulation of radioactive decays and sets the corresponding
 * biasing and transport conditions
 RADDECAY          1.        1.        5.100000000.   1001000        1.
-USRBIN           0.0  ACTIVITY      -23.       1.0       1.0       0.0Chr_act
-USRBIN          -1.0      -1.0   -0.0002       20.       20.        1. &
+USRBIN           0.0  ACTIVITY      -23.        1.        1.       0.0Chr_act
+USRBIN           -1.       -1.   -0.0002       20.       20.        1. &
 DCYSCORE          1.                       Chr_act   Chr_act          USRBIN
 AUXSCORE      USRBIN -5102400.             Chr_act   Chr_act
 IRRPROFI    2592000.   6.25E13
@@ -135,5 +135,5 @@ DCYSCORE          1.                      res_coat  res_coat          RESNUCLE
 * Set the random number seed
 RANDOMIZ          1.
 * Set the number of primary histories to be simulated in the run
-START       1000000.
+START     100000000.
 STOP
